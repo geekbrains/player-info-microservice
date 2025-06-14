@@ -5,10 +5,12 @@ FROM eclipse-temurin:17-jdk
 WORKDIR /app
 
 # Copy Spring Boot JAR file
-COPY target/myapp.jar app.jar
+COPY target/player-info-microservice.jar app.jar
+
+VOLUME ["/data", "/config"]
 
 # Expose port 8989 (configured in app config)
-EXPOSE 8989
+EXPOSE 8888
 
 # Run the app, output logs to console (stdout)
 CMD ["java", "-jar", "app.jar"]
