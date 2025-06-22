@@ -2,6 +2,8 @@ package com.example.player_info_microservice.controller;
 
 
 import com.example.player_info_microservice.model.Player;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.web.server.WebServerException;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequestMapping("/players")
 public class PlayerController {
 
+    private static final Logger log = LoggerFactory.getLogger(PlayerController.class);
 
     private static final List<Player> players= Arrays.asList(
             new Player(1,"p1","Nitin Varshney", BigDecimal.valueOf(10000)),
@@ -33,12 +36,15 @@ public class PlayerController {
 
     @GetMapping
     public ResponseEntity<List<Player>> getAllPlayers(){
+        log.info("method {} invoked ", "getAllPlayers");
         return ResponseEntity.ok(players);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<?> getPlayerById(@PathVariable("id") int id ){
+        log.info("method {} invoked  with player id {}", "getPlayerById",id);
        List<Player> playerList=players.stream().filter(player -> player.getId()==id).toList();
+        log.info("playerList {}", playerList);
        if(!playerList.isEmpty()){
            return ResponseEntity.ok(playerList.get(0));
        }else{
@@ -48,6 +54,7 @@ public class PlayerController {
 
     @GetMapping(value = "/partner/{partnerId}")
     public ResponseEntity<List<Player>> getPlayerByPartner(@PathVariable("partnerId") String partnerId ){
+        log.info("method {} invoked  with partner id {}", "getPlayerByPartner",partnerId);
         List<Player> playerList=players.stream().filter(player -> player.getPartnerId().equalsIgnoreCase(partnerId)).toList();
         if(!playerList.isEmpty()){
             return ResponseEntity.ok(playerList);
